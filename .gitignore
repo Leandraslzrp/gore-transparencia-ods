@@ -1,10 +1,14 @@
 .venv/
 __pycache__/
 cache/
-salidas/*
-!salidas/.gitkeep
+salidas/
+mediciones/
+resultados/
+documentos_manuales/*
+!documentos_manuales/LEEME.md
 datos/informes_cplt/
 *.log
 .DS_Store
 config/contacto.txt
 
+~$*

@@ -16,7 +16,7 @@ Entre la recolección automática y la codificación (paso 2b de `PROTOCOLO_ROND
 recolectar  →  REVISIÓN MANUAL  →  plantilla de codificación  →  codificar  →  cerrar
 ```
 
-`python ejecutar_todo.py recolectar` genera, al final, `salidas/revision_manual_FECHA.xlsx` con los casos pendientes. Calcule **un día de trabajo** para una persona, más una hora de una segunda persona para confirmar los «no disponible».
+`python ejecutar_todo.py recolectar` genera, al final, `salidas/revision_manual_FECHA.xlsx` con los casos pendientes (hay una versión en blanco en `plantillas/revision_manual_PLANTILLA.xlsx`). Calcule **un día de trabajo** para una persona, más una hora de una segunda persona para confirmar los «no disponible».
 
 ## La planilla de revisión
 
@@ -26,7 +26,7 @@ recolectar  →  REVISIÓN MANUAL  →  plantilla de codificación  →  codific
 | Menciones_manuales | Cada página web con mención de los ODS hallada a mano | Revisor 1 |
 | Busquedas_manuales | Cada búsqueda hecha a mano, **aunque no encuentre nada** | Revisor 1 |
 
-Las celdas amarillas se llenan; las filas grises son ejemplos. El resultado de cada caso se elige de una lista:
+En Pendientes se llenan las celdas amarillas; en las otras dos hojas se agrega una fila por cada mención o búsqueda. El resultado de cada caso se elige de una lista:
 
 | Resultado | Cuándo usarlo | Evidencia obligatoria |
 |---|---|---|

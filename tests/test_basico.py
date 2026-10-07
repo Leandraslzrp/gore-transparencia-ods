@@ -1,8 +1,9 @@
 """
 Pruebas automáticas sin internet. Ejecutar desde la carpeta del proyecto:
   python -m unittest discover -s tests -v        (o: python ejecutar_todo.py pruebas)
-Comprueban que (1) las reglas de búsqueda y de cálculo no cambiaron sin querer y (2) la ronda del paper
-(mediciones/2026-1) sigue reproduciendo las cifras publicadas.
+Comprueban que (1) las reglas de búsqueda y de cálculo no cambiaron sin querer y (2) el flujo completo de una ronda
+(revisión manual → codificación → cierre → análisis) funciona con los datos de ejemplo de tests/datos/
+(salidas reales de la recolección automática del 29-09-2026).
 """
 
 import json
@@ -20,9 +21,9 @@ sys.path.insert(0, str(RAIZ / "codigo"))
 import pandas as pd  # noqa: E402
 
 import comun  # noqa: E402
-from analisis_ronda import analizar, wilson  # noqa: E402
+from analisis_ronda import wilson  # noqa: E402
 from ods_terminos import contar, ods_mencionados, tiene_nucleo  # noqa: E402
-from ronda import _orden, codigo_de, indice, kappa, leer  # noqa: E402
+from ronda import _orden, codigo_de, indice, kappa  # noqa: E402
 
 
 class Terminos(unittest.TestCase):
@@ -118,44 +119,8 @@ class Calculos(unittest.TestCase):
         )
 
 
-class RondaPaper(unittest.TestCase):
-    """La ronda 2026-1 debe reproducir las cifras del paper."""
-
-    @classmethod
-    def setUpClass(cls):
-        hojas, resumen, _ = analizar("2026-1", None, 2026)
-        cls.h, cls.r = hojas, dict(zip(resumen.Indicador, resumen.Valor))
-
-    def test_integridad(self):
-        from cerrar_ronda import verificar
-
-        self.assertEqual(verificar("2026-1"), [])
-
-    def test_portal(self):
-        self.assertTrue(self.r["Índice medio del Portal (2026-1)"].startswith("86.7 %"))
-
-    def test_convergencia(self):
-        c = self.h["Convergencia_CPLT"].iloc[0]
-        self.assertEqual(round(c["Spearman ρ"], 2), -0.03)
-        self.assertEqual(round(c["Wilcoxon p"], 3), 0.039)
-
-    def test_ods(self):
-        p = self.h["ODS_proporciones"].set_index("Indicador")
-        self.assertEqual(p.loc["GORE con mención ODS en su sitio web", "k"], 13)
-        self.assertEqual(p.loc["ERD con vínculo sustantivo (nivel ≥ 2)", "k"], 7)
-        self.assertEqual(p.loc["Cuentas públicas con vínculo sustantivo", "k"], 0)
-        self.assertEqual(p.loc["Cuentas públicas con vínculo sustantivo", "n"], 14)
-
-    def test_fiabilidad(self):
-        f = leer("2026-1", "fiabilidad").set_index("medida")
-        self.assertEqual(round(f.loc["Tipo de mención (Retórica/Sustantiva)", "kappa"], 2), 0.87)
-
-    def test_cplt(self):
-        self.assertEqual(self.r["CPLT promedio 2024 / 2025 / 2026 (%)"], "76.6 / 76.1 / 92.3")
-
-
 class FlujoCompleto(unittest.TestCase):
-    """Simula una ronda nueva de punta a punta en una copia temporal: plantilla → codificación → cierre → análisis → visor."""
+    """Simula dos rondas de punta a punta en una copia temporal: revisión → codificación → cierre → análisis."""
 
     def test_flujo(self):
         e = "2026-09-29"
@@ -169,15 +134,14 @@ class FlujoCompleto(unittest.TestCase):
                 ),
             )
             (d / "salidas").mkdir()
-            rp = RAIZ / "paper_2026" / "resultados"  # salidas del código usadas en el paper
-            for orig, dest in [
-                (f"portal_matriz_{e}.csv", f"portal_matriz_{e}.csv"),
-                (f"ods_menciones_web_{e}.csv", f"ods_menciones_web_{e}.csv"),
-                (f"ods_documentos_{e}-completo.csv", f"ods_documentos_{e}.csv"),
-                (f"ods_pasajes_{e}-completo.csv", f"ods_pasajes_{e}.csv"),
-                (f"ods_busquedas_{e}.csv", f"ods_busquedas_{e}.csv"),
-            ]:
-                shutil.copy(rp / orig, d / "salidas" / dest)
+            rp = RAIZ / "tests" / "datos"  # salidas de ejemplo de la recolección automática
+            for f in rp.glob(f"*_{e}.csv"):
+                shutil.copy(f, d / "salidas" / f.name)
+            # los datos de ejemplo son anteriores a la columna sha256: se agrega una huella de prueba
+            fd = d / "salidas" / f"ods_documentos_{e}.csv"
+            dd = pd.read_csv(fd, encoding="utf-8-sig")
+            dd["sha256"] = [comun.sha256_texto(f"prueba-{i}") for i in range(len(dd))]
+            dd.to_csv(fd, index=False, encoding="utf-8-sig")
             py = lambda *a: subprocess.run([sys.executable, *a], cwd=d, check=True, capture_output=True, text=True)
             py(
                 "codigo/ods_codificacion.py",
@@ -204,9 +168,9 @@ class FlujoCompleto(unittest.TestCase):
                     m.cell(r, 12, "Retórica")
             dc = wb["Documentos"]
             for r in range(2, dc.max_row + 1):
-                if dc.cell(r, 1).value and not dc.cell(r, 9).value:
+                if dc.cell(r, 1).value and not dc.cell(r, 8).value:
+                    dc.cell(r, 8, "Sin mención")
                     dc.cell(r, 9, "Sin mención")
-                    dc.cell(r, 10, "Sin mención")
             mp = wb["Mapa_17_ODS"]
             for r in range(2, mp.max_row + 1):
                 if mp.cell(r, 1).value:
@@ -236,22 +200,33 @@ class FlujoCompleto(unittest.TestCase):
                 ],
                 1,
             ):
-                wm.cell(3, j, v)
+                wm.cell(2, j, v)
             wr.save(rv)
             py("codigo/revision_manual.py", "exportar", "--etiqueta", e)
             self.assertTrue((d / "salidas" / f"ods_menciones_manuales_{e}.csv").exists())
-            py("codigo/cerrar_ronda.py", "2026-2", "--codificacion", str(f), "--etiqueta", e)
-            self.assertTrue((d / "mediciones" / "2026-2" / "crudos" / f"revision_manual_{e}.csv").exists())
-            out = py("codigo/analisis_ronda.py", "2026-2").stdout
-            self.assertIn("Cambio 2026-1 → 2026-2", out)
-            py("codigo/visor.py")
-            self.assertIn('"ronda": "2026-2"', (d / "docs" / "index.html").read_text(encoding="utf-8"))
-            man = json.loads((d / "mediciones" / "2026-2" / "manifiesto.json").read_text(encoding="utf-8"))
+            for r in ("2027-1", "2027-2"):  # dos rondas con los mismos datos, para probar la comparación
+                py("codigo/cerrar_ronda.py", r, "--codificacion", str(f), "--etiqueta", e)
+                out = py("codigo/analisis_ronda.py", r).stdout
+            self.assertTrue((d / "mediciones" / "2027-2" / "crudos" / f"revision_manual_{e}.csv").exists())
+            self.assertIn("Cambio 2027-1 → 2027-2", out)
+            docs = pd.read_csv(d / "mediciones" / "2027-2" / "ods_documentos.csv")
+            self.assertTrue(
+                docs.sha256.notna().any()
+            )  # la huella de cada PDF viene de la recolección, no de la planilla
+            man = json.loads((d / "mediciones" / "2027-2" / "manifiesto.json").read_text(encoding="utf-8"))
             self.assertIn("portal_matriz.csv", man["archivos"])
             serie = pd.read_csv(d / "resultados" / "serie_rondas.csv")
-            self.assertEqual(list(serie.ronda), ["2026-1", "2026-2"])
+            self.assertEqual(list(serie.ronda), ["2027-1", "2027-2"])
+            self.assertEqual(serie.indice_portal_medio.iloc[-1], 89.2)  # recorrido del 29-09-2026
+            ver = subprocess.run(
+                [sys.executable, "codigo/cerrar_ronda.py", "--verificar", "2027-2"],
+                cwd=d,
+                capture_output=True,
+                text=True,
+            )
+            self.assertIn("íntegra", ver.stdout)
             with self.assertRaises(subprocess.CalledProcessError):  # una ronda cerrada no se sobrescribe sin --forzar
-                py("codigo/cerrar_ronda.py", "2026-2", "--codificacion", str(f), "--etiqueta", e)
+                py("codigo/cerrar_ronda.py", "2027-2", "--codificacion", str(f), "--etiqueta", e)
 
 
 class RevisionManual(unittest.TestCase):
@@ -259,27 +234,6 @@ class RevisionManual(unittest.TestCase):
         import revision_manual
 
         self.assertIn("No disponible (confirmado por 2)", revision_manual.RESULTADOS)
-
-
-class HistorialYVisor(unittest.TestCase):
-    def test_historial_semilla(self):
-        from historial_portal import mediciones
-
-        h = mediciones()
-        self.assertGreaterEqual(len(h), 3)
-        r, m = h[0]
-        self.assertEqual(r["fecha"], "2026-07-22")
-        self.assertAlmostEqual(m.indice.mean(), 86.7, places=1)
-        for r, _ in h:  # cada archivo coincide con su huella registrada
-            self.assertEqual(comun.sha256_archivo(RAIZ / "actualizaciones" / "portal" / r["archivo"]), r["sha256"])
-
-    def test_visor_con_historial(self):
-        import visor
-
-        datos, anios, portal = visor.construir("2026-1")
-        self.assertEqual(len(datos), 16)
-        self.assertEqual(len(portal), len(datos[0]["h"]))
-        self.assertEqual(portal[-1]["fecha"], max(p["fecha"] for p in portal))
 
 
 if __name__ == "__main__":

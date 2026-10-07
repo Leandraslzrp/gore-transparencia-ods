@@ -14,4 +14,4 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["comun", "ronda", "ods_terminos", "historial_portal", "cerrar_ronda", "analisis_ronda", "revision_manual"]
+known-first-party = ["comun", "ronda", "ods_terminos", "cerrar_ronda", "analisis_ronda", "revision_manual"]

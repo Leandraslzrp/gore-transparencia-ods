@@ -39,6 +39,7 @@ La medición se puede repetir en cualquier fecha. Para comparar entre rondas con
 - **Recorrer todo el Portal en un mismo día**, o en días consecutivos, y anotar la fecha.
 - **Medir después de que se publiquen las cuentas públicas.** En 2026 se presentaron entre mayo y julio; una ronda anterior a esas fechas mide la cuenta del año previo.
 - **Nombrar la ronda** con el año, un guion y el número de ronda del año (`2027-1`, `2027-2`). Así las rondas se ordenan solas y el análisis compara cada una con la anterior.
+- **Para comparar con el artículo,** copie los datos de la ronda `2026-1` en `mediciones/2026-1/` antes de cerrar la nueva ronda. Si no los tiene, la ronda se analiza igual, sin comparación.
 
 ## Pasos
 
@@ -84,7 +85,7 @@ python ejecutar_todo.py plantilla --etiqueta 2027-06-15
 
 ### 5. Codificar (1 a 2 días) · Codificador/a 1 y codificador/a 2
 
-Las reglas están en la hoja `Instrucciones` de la planilla y en el apartado «Divulgación de los ODS» del [README](../README.md).
+Las reglas están en «Reglas de medición» del [README](../README.md). En `plantillas/codificacion_ods_PLANTILLA.xlsx` hay una planilla en blanco.
 
 - [ ] Cada persona llena **solo su columna**, sin mirar la otra, en las hojas `Menciones`, `Documentos` y `Mapa_17_ODS`.
 - [ ] Revisen el acuerdo: `python codigo/ods_codificacion.py kappa salidas/codificacion_ods_2027-06-15.xlsx`. Si algún κ es menor que 0,60, discutan los criterios y recodifiquen antes de seguir.
@@ -105,17 +106,17 @@ Esto deja:
 - `resultados/serie_rondas.csv` y `resultados/evolucion_rondas.png`: los indicadores de todas las rondas.
 
 - [ ] Lea la hoja `Resumen` del análisis y compárela con la ronda anterior. Los cambios grandes en un GORE suelen deberse a cambios en su sitio: verifíquelos antes de interpretarlos.
-- [ ] Anote la ronda en `CHANGELOG.md`: fechas, roles (sin nombres si el informe es anónimo), cambios en `gores.csv` y problemas encontrados.
-- [ ] Publique la versión (ver [PUBLICAR.md](PUBLICAR.md)): commit, etiqueta `ronda-2027-2` y nueva versión en Zenodo.
+- [ ] Escriba el informe de la ronda: fechas, roles (sin nombres si el informe es anónimo), cambios en `gores.csv`, problemas encontrados y resultado del control de calidad.
+- [ ] Guarde `mediciones/2027-2/` y `resultados/2027-2/` donde el equipo lo haya acordado. No se suben a este repositorio; si se publican, conviene archivarlos en Zenodo como conjunto de datos, con su `manifiesto.json`.
 
 ## Corregir una ronda cerrada
 
 Una ronda cerrada no se edita a mano sin dejar registro. `python ejecutar_todo.py verificar 2027-2` detecta cualquier cambio posterior al cierre.
 
 - **Si el error está en la codificación:** corrija la planilla y vuelva a cerrar con `python ejecutar_todo.py cerrar 2027-2 --etiqueta 2027-06-15 --forzar`.
-- **Si después del cierre aparece un documento que no se había encontrado:** guarde el documento en `documentos_manuales/`, corrija la fila en `mediciones/RONDA/`, anote en `manifiesto.json` (campo `correcciones`) la fecha, el motivo, la huella del documento y los archivos cambiados, actualice las huellas y rehaga el análisis con `python ejecutar_todo.py analizar RONDA`. Así se corrigió la cuenta pública de La Araucanía en la ronda `2026-1` (ver `CHANGELOG.md`).
+- **Si después del cierre aparece un documento que no se había encontrado:** guarde el documento en `documentos_manuales/`, corrija la fila en `mediciones/RONDA/`, anote en `manifiesto.json` (campo `correcciones`) la fecha, el motivo, la huella del documento y los archivos cambiados, actualice las huellas y rehaga el análisis con `python ejecutar_todo.py analizar RONDA`. Así se corrigió la cuenta pública de La Araucanía en la ronda `2026-1`.
 
-En ambos casos, explique la corrección en `CHANGELOG.md` y compruebe con `python ejecutar_todo.py verificar RONDA` que la ronda queda íntegra.
+En ambos casos, explique la corrección en el informe de la ronda y compruebe con `python ejecutar_todo.py verificar RONDA` que la ronda queda íntegra.
 
 ## Reglas que no se cambian
 
@@ -123,14 +124,4 @@ En ambos casos, explique la corrección en `CHANGELOG.md` y compruebe con `pytho
 2. **Mismos términos, categorías y reglas de puntaje** que en `2026-1`, salvo cambio de versión mayor.
 3. **Solo información pública.** No se guarda el contenido de las tablas del Portal (puede tener datos personales), solo su existencia y su tamaño.
 4. **Respeto de robots.txt** y pausas de 1 a 2,5 segundos entre solicitudes.
-5. **Toda corrección queda registrada** en el manifiesto y en `CHANGELOG.md`.
-
-## Anexo: el visor del equipo
-
-El visor web (`docs/index.html`, publicado con GitHub Pages) es una iniciativa del equipo para mostrar los resultados; **no es necesario para replicar la medición**. Quien repita el estudio puede ignorarlo.
-
-El equipo mantiene el visor así:
-
-- Cada vez que se cierra una ronda, `cerrar` también regenera el visor.
-- Entre rondas, el equipo repite solo el recorrido del Portal (no requiere codificación) para mantener el visor al día: `python ejecutar_todo.py actualizar --publicar`, o en GitHub, *Actions* → **Actualizar Portal y visor** → *Run workflow*. Esas mediciones quedan en `actualizaciones/portal/` con su fecha, método y huella SHA-256, y se muestran en la pestaña **Disponibilidad en el Portal** del visor. No forman parte de las rondas ni de sus análisis.
-- Para regenerar el visor sin medir: `python ejecutar_todo.py visor`.
+5. **Toda corrección queda registrada** en el manifiesto y en el informe de la ronda.

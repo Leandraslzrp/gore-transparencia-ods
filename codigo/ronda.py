@@ -23,7 +23,7 @@ ARCHIVOS = {
     "documentos": "ods_documentos.csv",  # una fila por documento (ERD o cuenta pública), con clasificación
     "mapa": "erd_mapa_ods.csv",  # consenso: nivel de la ERD y código 0/1/2 de cada ODS
     "mapa_cod": "erd_mapa_ods_codificadores.csv",  # codificación independiente del mapa (cod. 1 y cod. 2)
-    "resumen": "ods_resumen_gore.csv",  # derivado: una fila por GORE para el visor
+    "resumen": "ods_resumen_gore.csv",  # derivado: una fila por GORE con la clasificación de cada fuente
     "fiabilidad": "fiabilidad.csv",
     "manifiesto": "manifiesto.json",
 }

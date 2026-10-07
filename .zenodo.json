@@ -1,13 +1,30 @@
 {
-  "title": "Transparencia activa y ODS en los Gobiernos Regionales de Chile: código, datos y rondas de medición",
-  "description": "Código abierto y datos para medir de forma reproducible la transparencia activa (Portal de Transparencia, índices del Consejo para la Transparencia) y la divulgación de los Objetivos de Desarrollo Sostenible en sitios web, Estrategias Regionales de Desarrollo y cuentas públicas de los 16 Gobiernos Regionales de Chile. Incluye protocolo para repetir la medición tres veces al año.",
+  "title": "Medición de la transparencia activa y la divulgación de los ODS en los Gobiernos Regionales de Chile: código y protocolo",
+  "description": "Código abierto y protocolo para repetir la medición de la transparencia activa (índices del Consejo para la Transparencia y disponibilidad en el Portal de Transparencia) y de la divulgación de los Objetivos de Desarrollo Sostenible en sitios web, Estrategias Regionales de Desarrollo y cuentas públicas de los 16 Gobiernos Regionales de Chile. Incluye el protocolo de revisión manual, plantillas de codificación y pruebas automáticas.",
   "upload_type": "software",
   "creators": [
-    {"name": "Salazar Pincheira, Darling", "affiliation": "Universidad del Bío-Bío"},
-    {"name": "Morales Parada, Fernando"},
-    {"name": "Hollander Sanhueza, Reinier"}
+    {
+      "name": "Salazar Pincheira, Darling",
+      "affiliation": "Universidad del Bío-Bío"
+    },
+    {
+      "name": "Morales Parada, Fernando"
+    },
+    {
+      "name": "Hollander Sanhueza, Reinier"
+    }
   ],
   "license": "MIT",
   "language": "spa",
-  "keywords": ["transparencia activa", "gobiernos regionales", "Objetivos de Desarrollo Sostenible", "ODS", "web scraping", "Chile", "rendición de cuentas", "ciencia abierta"]
+  "keywords": [
+    "transparencia activa",
+    "gobiernos regionales",
+    "Objetivos de Desarrollo Sostenible",
+    "ODS",
+    "web scraping",
+    "Chile",
+    "rendición de cuentas",
+    "ciencia abierta"
+  ],
+  "version": "2.0.0"
 }

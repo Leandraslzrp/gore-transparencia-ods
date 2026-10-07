@@ -5,9 +5,10 @@ Paso 1 · plantilla: junta las menciones web, los pasajes y los documentos en un
   python codigo/ods_codificacion.py plantilla --web salidas/ods_menciones_web_FECHA.csv --docs salidas/ods_pasajes_FECHA.csv \
          --documentos salidas/ods_documentos_FECHA.csv --busquedas salidas/ods_busquedas_FECHA.csv
   → salidas/codificacion_ods_FECHA.xlsx con hojas:
-     Instrucciones · Menciones (Retórica/Sustantiva, dos codificadores y consenso) · Documentos (clasificación de cada
+     Menciones (Retórica/Sustantiva, dos codificadores y consenso) · Documentos (clasificación de cada
      ERD y cuenta pública, dos codificadores y consenso) · Mapa_17_ODS (nivel 0-3 de la ERD y 0/1/2 por ODS; filas
      cod. 1, cod. 2 y consenso) · Muestra_verificacion (5 GORE × términos para repetir la búsqueda web, semilla 2026)
+  Las reglas de codificación están en «Reglas de medición» del README y en documentacion/PROTOCOLO_RONDAS.md.
   La columna «Sugerencia automática» es solo una ayuda por palabras clave: NO reemplaza la codificación humana.
 
 Paso 2 · fiabilidad: una vez que ambos codificadores llenaron el Excel (sin ver el trabajo del otro).
@@ -115,27 +116,8 @@ def plantilla(a):
     from openpyxl import Workbook
 
     wb = Workbook()
-    ws = wb.active
-    ws.title = "Instrucciones"
-    txt = [
-        "Codificación de menciones ODS",
-        "",
-        "Retórica: menciona los ODS o la Agenda 2030 (discurso, evento, contexto, cita) sin vincularlos a objetivos, metas, indicadores o presupuesto del GORE.",
-        "Sustantiva: vincula ODS o metas específicas con objetivos, lineamientos, indicadores, programas o financiamiento del GORE.",
-        "En caso de duda: Retórica, y dejar nota.",
-        "Cada codificador llena SOLO su columna amarilla, sin mirar la del otro. La consenso se llena después de discutir los desacuerdos.",
-        "Documentos: clasifique cada ERD y cuenta pública completa (Sustantiva / Retórica / Sin mención / No disponible).",
-        "Mapa_17_ODS: 0 = no aparece · 1 = solo como contexto · 2 = vinculado a eje, lineamiento, objetivo o indicador.",
-        "Nivel de la ERD: 0 = sin mención · 1 = declarativa · 2 = vinculación (parcial o estratégica) · 3 = operacionalizada (metas o indicadores ODS).",
-        "Cada codificador llena su fila (cod. 1 / cod. 2) del mapa; la fila «consenso» se llena después de discutir.",
-        "Al terminar: python codigo/cerrar_ronda.py NOMBRE_RONDA --codificacion este_archivo.xlsx (ver documentacion/PROTOCOLO_RONDAS.md).",
-        "La «Sugerencia automática» se basa en palabras clave y sirve solo para ordenar el trabajo; no es un código.",
-    ]
-    for i, t in enumerate(txt, 1):
-        ws.cell(i, 1, t).font = FB if i == 1 else F
-    ws.column_dimensions["A"].width = 150
-
-    m = wb.create_sheet("Menciones")
+    m = wb.active
+    m.title = "Menciones"
     cols = [
         "ID",
         "GORE",
@@ -199,7 +181,6 @@ def plantilla(a):
             "GORE",
             "Fuente",
             "Archivo / origen",
-            "SHA-256",
             "Estado automático",
             "Páginas con término",
             "ODS nombrados",
@@ -209,7 +190,7 @@ def plantilla(a):
             "Consenso final",
             "Nota",
         ],
-        [8, 16, 14, 30, 18, 22, 10, 16, 16, 16, 9, 16, 40],
+        [8, 16, 14, 30, 22, 10, 16, 16, 16, 9, 16, 40],
     )
     dv3 = DataValidation(type="list", formula1='"' + ",".join(CLASES_DOC) + '"', allow_blank=True)
     dc.add_data_validation(dv3)
@@ -221,24 +202,23 @@ def plantilla(a):
             f["gore"],
             f["fuente"],
             f.get("archivo") if isinstance(f.get("archivo"), str) else f.get("origen"),
-            f.get("sha256", ""),
             f.get("estado"),
             f.get("paginas_con_termino_nucleo", ""),
             f.get("ods_nombrados", ""),
             "No disponible" if nd else None,
             "No disponible" if nd else None,
-            f'=IF(OR(I{r}="",J{r}=""),"",IF(I{r}=J{r},1,0))',
+            f'=IF(OR(H{r}="",I{r}=""),"",IF(H{r}=I{r},1,0))',
             "No disponible" if nd else None,
             None,
         ]
         for c, v in enumerate(vals, 1):
             x = dc.cell(r, c, None if (isinstance(v, float) and pd.isna(v)) else v)
             x.font = F
-        for c in (9, 10, 12, 13):
+        for c in (8, 9, 11, 12):
             dc.cell(r, c).fill = AMARILLO
+        dv3.add(f"H{r}")
         dv3.add(f"I{r}")
-        dv3.add(f"J{r}")
-        dv3.add(f"L{r}")
+        dv3.add(f"K{r}")
     dc.freeze_panes = "D2"
 
     # Mapa 17 ODS: tres filas por GORE (cod. 1, cod. 2, consenso), con el nivel de integración de la ERD

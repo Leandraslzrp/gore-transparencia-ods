@@ -1,7 +1,7 @@
-Los datos y resultados de las carpetas datos/, mediciones/, actualizaciones/, resultados/, paper_2026/ y docs/
-se publican bajo la licencia Creative Commons Atribución 4.0 Internacional (CC BY 4.0):
+Los archivos de las carpetas config/, datos/, plantillas/ y tests/datos/ se publican bajo la licencia
+Creative Commons Atribución 4.0 Internacional (CC BY 4.0):
 https://creativecommons.org/licenses/by/4.0/deed.es
 
 Los índices del Consejo para la Transparencia provienen de sus informes públicos de fiscalización
-(ver config/cplt_informes.csv). Los documentos de documentos_manuales/ pertenecen a los Gobiernos Regionales
-que los publicaron y se incluyen solo para permitir la replicación.
+(ver config/cplt_informes.csv). Los datos de ejemplo de tests/datos/ provienen de páginas y documentos
+públicos de los Gobiernos Regionales.

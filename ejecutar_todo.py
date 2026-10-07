@@ -15,16 +15,11 @@ RONDA DE MEDICIÓN (tres veces al año)
   3) Cerrar y analizar (después de codificar y acordar el consenso)
        python ejecutar_todo.py cerrar 2027-1 --etiqueta 2027-04-10 --fecha-scraping "10 de abril de 2027" \\
               --fecha-ods "12 al 20 de abril de 2027"
-     → mediciones/2027-1/ (datos con huella SHA-256), resultados/2027-1/ (análisis y figuras) y docs/index.html
-
-ENTRE RONDAS
-  python ejecutar_todo.py actualizar --publicar   # recorre el Portal, actualiza el visor y lo sube a GitHub
-  python ejecutar_todo.py visor                   # solo regenera el visor (docs/index.html)
+     → mediciones/2027-1/ (datos con huella SHA-256) y resultados/2027-1/ (análisis y figuras)
 
 OTROS
   python ejecutar_todo.py analizar 2026-1         # rehace el análisis y las figuras de una ronda cerrada
   python ejecutar_todo.py verificar 2026-1        # comprueba que los datos de la ronda no cambiaron
-  python ejecutar_todo.py paper                   # reproduce el análisis estadístico del paper 2026
   python ejecutar_todo.py pruebas                 # pruebas automáticas (sin internet)
 """
 
@@ -48,10 +43,9 @@ def correr(script, *args):
 
 
 def analizar(ronda):
-    """Análisis, figuras y visor de una ronda cerrada."""
+    """Análisis y figuras de una ronda cerrada."""
     correr("analisis_ronda.py", ronda)
     correr("ods_graficos.py", "--ronda", ronda)
-    correr("visor.py", "--ronda", ronda)
 
 
 def main():
@@ -65,7 +59,7 @@ def main():
     pl = sub.add_parser("plantilla", help="valida la revisión manual y genera la planilla de codificación")
     pl.add_argument("--etiqueta", required=True)
     pl.add_argument("--sin-revision", action="store_true", help="sin la revisión manual (no recomendado)")
-    c = sub.add_parser("cerrar", help="cierra la ronda, la analiza y regenera el visor")
+    c = sub.add_parser("cerrar", help="cierra la ronda y la analiza")
     c.add_argument("ronda")
     c.add_argument("--etiqueta", required=True)
     c.add_argument("--codificacion")
@@ -74,11 +68,6 @@ def main():
     c.add_argument("--forzar", action="store_true", help="volver a cerrar una ronda ya cerrada (corrección)")
     sub.add_parser("analizar", help="rehace el análisis y las figuras de una ronda cerrada").add_argument("ronda")
     sub.add_parser("verificar", help="comprueba el manifiesto de una ronda").add_argument("ronda")
-    sub.add_parser("actualizar", help="nueva medición del Portal y visor").add_argument(
-        "--publicar", action="store_true"
-    )
-    sub.add_parser("visor", help="regenera docs/index.html")
-    sub.add_parser("paper", help="reproduce el análisis estadístico del paper 2026")
     sub.add_parser("pruebas", help="pruebas automáticas")
     a = ap.parse_args()
 
@@ -134,20 +123,11 @@ def main():
             *(["--forzar"] if a.forzar else []),
         )
         analizar(a.ronda)
-        print(
-            f"\nListo. Revise resultados/{a.ronda}/ y docs/index.html; luego publique la versión "
-            "(documentacion/PUBLICAR.md)."
-        )
+        print(f"\nListo. Revise resultados/{a.ronda}/; luego publique la versión (documentacion/PUBLICAR.md).")
     elif a.accion == "analizar":
         analizar(a.ronda)
-    elif a.accion == "actualizar":
-        correr("actualizar_portal.py", *(["--publicar"] if a.publicar else []))
-    elif a.accion == "visor":
-        correr("visor.py")
     elif a.accion == "verificar":
         correr("cerrar_ronda.py", "--verificar", a.ronda)
-    elif a.accion == "paper":
-        subprocess.run([sys.executable, str(RAIZ / "paper_2026" / "analisis_paper_2026.py")], check=True, cwd=RAIZ)
     else:
         correr("-m", "unittest", "discover", "-s", "tests", "-v")
 

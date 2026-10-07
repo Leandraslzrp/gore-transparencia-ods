@@ -95,7 +95,6 @@ def leer_codificacion(xlsx):
             "gore": dc["GORE"],
             "fuente": dc["Fuente"],
             "documento": dc["Archivo / origen"],
-            "sha256": dc["SHA-256"],
             "cod1": dc["Clasificación (cod. 1)"],
             "cod2": dc["Clasificación (cod. 2)"],
             "consenso": dc["Consenso final"],
@@ -156,8 +155,10 @@ def main():
     ap.add_argument("ronda", nargs="?", help="nombre de la ronda, p. ej. 2027-1 (año-número de ronda)")
     ap.add_argument("--codificacion", help="Excel de codificación ya llenado por los dos codificadores")
     ap.add_argument("--etiqueta", help="etiqueta (fecha) de los archivos de salidas/ de esta ronda")
-    ap.add_argument("--fecha-scraping", help="texto libre para el visor, p. ej. «10 de abril de 2027»")
-    ap.add_argument("--fecha-ods", help="texto libre para el visor, p. ej. «12 al 20 de abril de 2027»")
+    ap.add_argument("--fecha-scraping", help="fecha del recorrido del Portal, en texto, p. ej. «10 de abril de 2027»")
+    ap.add_argument(
+        "--fecha-ods", help="fechas de la búsqueda de los ODS, en texto, p. ej. «12 al 20 de abril de 2027»"
+    )
     ap.add_argument("--forzar", action="store_true", help="sobrescribir una ronda ya cerrada (queda registrado)")
     ap.add_argument("--verificar", metavar="RONDA", help="solo comprobar el manifiesto de una ronda cerrada")
     a = ap.parse_args()
@@ -196,7 +197,7 @@ def main():
     docs_csv = SALIDAS / f"ods_documentos_{e}.csv"
     if docs_csv.exists():
         dd = pd.read_csv(docs_csv, encoding="utf-8-sig", dtype={"codigo": str})
-        extra = [c for c in dd.columns if c.startswith("n_")] + ["paginas", "url_o_origen"]
+        extra = ["sha256"] + [c for c in dd.columns if c.startswith("n_")] + ["paginas", "url_o_origen"]
         dd["url_o_origen"] = dd.get("origen")
         dc = dc.merge(dd[["codigo", "fuente"] + [c for c in extra if c in dd]], on=["codigo", "fuente"], how="left")
 
@@ -215,16 +216,6 @@ def main():
     for base in CRUDOS:
         for f in SALIDAS.glob(f"{base}_{e}.*"):
             shutil.copy(f, crudos / f.name)
-    from historial_portal import FECHA, HISTORIAL, registrar
-
-    if FECHA.match(e) and not (HISTORIAL / f"portal_matriz_{e}.csv").exists():
-        registrar(
-            matriz,
-            e,
-            "portal_scraping.py (automático)",
-            f"Recorrido de la ronda {a.ronda}.",
-            detalle=SALIDAS / f"portal_detalle_{e}.csv",
-        )
     man = manifiesto(
         a.ronda,
         out,

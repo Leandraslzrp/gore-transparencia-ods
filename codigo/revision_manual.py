@@ -36,8 +36,6 @@ FB = Font(name="Arial", size=10, bold=True)
 FH = Font(name="Arial", size=10, bold=True, color="FFFFFF")
 HD = PatternFill("solid", fgColor="1F4E79")
 AM = PatternFill("solid", fgColor="FFF2CC")
-GR = PatternFill("solid", fgColor="F2F2F2")
-FX = Font(name="Arial", size=10, italic=True, color="7F7F7F")
 RESULTADOS = [
     "Confirmado (sin cambios)",
     "Encontrado a mano",
@@ -151,22 +149,7 @@ def crear(a):
     p = pendientes(a.etiqueta)
     wb = Workbook()
     ws = wb.active
-    ws.title = "Instrucciones"
-    txt = [
-        f"Revisión manual de la ronda (etiqueta {a.etiqueta})",
-        "",
-        "Siga documentacion/PROTOCOLO_REVISION_MANUAL.md. Llene solo las celdas amarillas; las filas grises son ejemplos.",
-        "Pendientes: un caso por fila. Elija el Resultado y registre la evidencia (URL o archivo).",
-        "«No disponible» solo se acepta si dos personas lo confirmaron por separado (Revisor 1 y Revisor 2).",
-        "Menciones_manuales: cada página web con mención de los ODS hallada a mano (se agregará a la planilla de codificación).",
-        "Busquedas_manuales: cada búsqueda hecha a mano, aunque no encuentre nada (sirve para reportar y replicar).",
-        "Al terminar: python codigo/revision_manual.py exportar --etiqueta " + a.etiqueta,
-    ]
-    for i, t in enumerate(txt, 1):
-        ws.cell(i, 1, t).font = FB if i == 1 else F
-    ws.column_dimensions["A"].width = 130
-
-    ws = wb.create_sheet("Pendientes")
+    ws.title = "Pendientes"
     cols = list(p.columns) + [
         "Resultado",
         "Evidencia (URL o archivo)",
@@ -201,25 +184,6 @@ def crear(a):
         "Fecha revisión",
     ]
     encabezado(ws, cols, [9, 18, 50, 45, 14, 26, 40, 16, 13])
-    ej = [
-        "AB079",
-        "Coquimbo",
-        "https://www.gorecoquimbo.cl/noticias/ejemplo",
-        "Gobernadora destaca avance hacia los ODS",
-        "2025-06-10",
-        "ODS",
-        'Google: site:gorecoquimbo.cl "ODS"',
-        "Nombre Apellido",
-        "2027-04-12",
-    ]
-    for j, v in enumerate(ej, 1):
-        c = ws.cell(2, j, v)
-        c.font = FX
-        c.fill = GR
-    for i in range(3, 103):
-        for j in range(1, 10):
-            ws.cell(i, j).fill = AM
-            ws.cell(i, j).font = F
 
     ws = wb.create_sheet("Busquedas_manuales")
     cols = [
@@ -234,25 +198,6 @@ def crear(a):
         "Nota",
     ]
     encabezado(ws, cols, [9, 18, 30, 45, 11, 13, 16, 12, 40])
-    ej = [
-        "AB079",
-        "Coquimbo",
-        "Google",
-        'site:gorecoquimbo.cl "Objetivos de Desarrollo Sostenible"',
-        14,
-        3,
-        "Nombre Apellido",
-        "2027-04-12",
-        "",
-    ]
-    for j, v in enumerate(ej, 1):
-        c = ws.cell(2, j, v)
-        c.font = FX
-        c.fill = GR
-    for i in range(3, 203):
-        for j in range(1, 10):
-            ws.cell(i, j).fill = AM
-            ws.cell(i, j).font = F
     out = SALIDAS / f"revision_manual_{a.etiqueta}.xlsx"
     wb.save(out)
     print(f"Planilla de revisión: {out} ({len(p)} casos pendientes)")
@@ -264,10 +209,7 @@ def _hoja(wb, nombre):
     ws = wb[nombre]
     filas = list(ws.iter_rows(min_row=1, values_only=True))
     df = pd.DataFrame(filas[1:], columns=filas[0])
-    df = df[df.iloc[:, :3].notna().any(axis=1)]
-    if nombre != "Pendientes":  # quitar la fila de ejemplo
-        df = df[df["Revisor"].astype(str) != "Nombre Apellido"]
-    return df
+    return df[df.iloc[:, :3].notna().any(axis=1)]
 
 
 def exportar(a):

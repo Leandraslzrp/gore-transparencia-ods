@@ -48,7 +48,7 @@ Categorías: A estructura orgánica · B facultades · C marco normativo · D1 p
 
 `erd_mapa_ods_codificadores.csv` tiene la codificación independiente en formato largo (`codigo`, `gore`, `ods`, `cod1`, `cod2`).
 
-## ods_resumen_gore.csv — resumen por GORE (lo usa el visor)
+## ods_resumen_gore.csv — resumen por GORE
 
 `web_retoricas`, `web_sustantivas` (n.º de menciones web) · `cuenta_publica`, `erd_clasificacion` (mejor clasificación del documento) · `erd_documento` · `erd_nivel`.
 
@@ -64,19 +64,13 @@ Nombre de la ronda, fecha de cierre (UTC), fechas de recolección y codificació
 
 `codificacion.xlsx` (planilla codificada original) · `config_gores.csv` (configuración usada) · `crudos/` (salidas sin procesar de los scripts, con fechas y horas de cada consulta).
 
-## actualizaciones/portal/ — mediciones del Portal entre rondas
-
-| Archivo | Contenido |
-|---|---|
-| `registro.csv` | Una fila por medición: `fecha` (AAAA-MM-DD), `archivo`, `metodo` (recorrido del equipo o `portal_scraping.py (automático)`), `gore_medidos`, `sha256`, `nota` |
-| `portal_matriz_AAAA-MM-DD.csv` | Mismo formato que `portal_matriz.csv` de las rondas |
-| `portal_detalle_AAAA-MM-DD.csv` | Evidencia de cada celda (cuando la medición la generó el código) |
-
 ## Fuera de las rondas
 
 | Archivo | Contenido |
 |---|---|
 | `datos/referencia_cplt.csv` | Índice de transparencia activa del CPLT por GORE y año (`cplt_2024`, …) |
+| `config/gores.csv` | Por GORE: sitio web, tipo de buscador, URL de búsqueda y de listado, URL de la cuenta pública y de la ERD |
 | `config/cplt_informes.csv` | Fuente de cada año del CPLT |
-| `resultados/serie_rondas.csv` | Indicadores principales de todas las rondas |
-| `datos/referencia_scraping_*.csv`, `paper_2026/resultados/`, `paper_2026/planilla_codificacion_ods.xlsx` | Datos originales del paper 2026 (congelados) |
+| `resultados/serie_rondas.csv` | Indicadores principales de todas las rondas (se crea al analizar) |
+| `plantillas/` | Planillas de revisión manual y de codificación en blanco |
+| `tests/datos/` | Salidas de ejemplo de la recolección automática (29-09-2026) para las pruebas |

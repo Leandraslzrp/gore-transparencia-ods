@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "Si usa este código o estos datos, cítelos así."
-title: "Transparencia activa y ODS en los Gobiernos Regionales de Chile: código y datos"
+title: "Medición de la transparencia activa y la divulgación de los ODS en los Gobiernos Regionales de Chile: código y protocolo"
 authors:
   - family-names: "Salazar Pincheira"
     given-names: "Darling"
@@ -8,7 +8,7 @@ authors:
     given-names: "Fernando"
   - family-names: "Hollander Sanhueza"
     given-names: "Reinier"
-version: "1.4.0"
+version: "2.0.0"
 date-released: "2026-10-07"
 license: MIT
 keywords: [transparencia activa, gobiernos regionales, ODS, web scraping, Chile]
