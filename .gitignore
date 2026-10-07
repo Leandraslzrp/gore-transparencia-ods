@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+cache/
+salidas/*
+!salidas/.gitkeep
+datos/informes_cplt/
+*.log
+.DS_Store
+config/contacto.txt
+

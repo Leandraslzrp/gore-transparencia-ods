@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "Si usa este código o estos datos, cítelos así."
+title: "Transparencia activa y ODS en los Gobiernos Regionales de Chile: código y datos"
+authors:
+  - family-names: "Salazar Pincheira"
+    given-names: "Darling"
+  - family-names: "Morales Parada"
+    given-names: "Fernando"
+  - family-names: "Hollander Sanhueza"
+    given-names: "Reinier"
+version: "1.4.0"
+date-released: "2026-10-07"
+license: MIT
+keywords: [transparencia activa, gobiernos regionales, ODS, web scraping, Chile]
+repository-code: "https://github.com/Leandraslzrp/gore-transparencia-ods"
+# Al obtener el DOI en Zenodo, agregue:
+# doi: "10.5281/zenodo.XXXXXXX"

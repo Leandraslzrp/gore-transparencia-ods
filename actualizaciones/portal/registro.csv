@@ -1,0 +1,5 @@
+fecha,archivo,metodo,gore_medidos,sha256,nota
+2026-07-22,portal_matriz_2026-07-22.csv,"Recorrido del equipo (paper, scraping 1)",16,c492f3c63b266109e2cc8cd6f7f42814ac2f70795e4cfd65c20efa4e4a9f9db3,15 GORE el 22-07 y Ñuble el 27-07-2026. Usado en el paper.
+2026-09-25,portal_matriz_2026-09-25.csv,"Recorrido del equipo (paper, scraping 2)",16,feff4439c82b429195b6d8d1c3c03b586970a0338253117fa6762fd6fbc0e165,Verificación de septiembre.
+2026-09-29,portal_matriz_2026-09-29.csv,portal_scraping.py (automático),16,521b1dfed4121034084a1fbd1ae5f10ff0a3c1d1c25dcb34fe5f7b57273d3fdd,Primer recorrido con el código; 237 de 240 celdas iguales al recorrido del 25-09.
+2026-10-07,portal_matriz_2026-10-07.csv,portal_scraping.py (automático),16,bce5d165fb625a02900cbc519c4742c04290b3ad0d7af850d7e35f456c133059,

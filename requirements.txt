@@ -1,0 +1,18 @@
+# Versiones exactas con que se generaron y verificaron los resultados (Python 3.12–3.14).
+# Instalar: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+# Si una versión no existe para su sistema, use requirements-min.txt (rangos compatibles) y anote las versiones
+# reales: cerrar_ronda.py las registra en el manifiesto de cada ronda.
+pandas==3.0.6
+numpy==2.5.3
+scipy==1.18.1
+openpyxl==3.1.5
+matplotlib==3.10.9      # gráficos (ods_graficos.py)
+requests==2.34.2
+beautifulsoup4==4.15.0
+lxml==6.1.3
+pdfplumber==0.11.10
+pdfminer.six==20260107
+pytesseract==0.3.13      # OCR (requiere Tesseract instalado, con idioma «spa»)
+pdf2image==1.17.0        # requiere Poppler
+Pillow==12.3.0
+playwright==1.63.0       # luego: python -m playwright install chromium

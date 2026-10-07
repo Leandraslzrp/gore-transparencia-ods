@@ -1,0 +1,44 @@
+# Recorre el Portal de Transparencia en los servidores de GitHub, guarda la medición en actualizaciones/portal/
+# y actualiza el visor. Se lanza a mano (Actions → «Actualizar Portal y visor» → Run workflow).
+# Para que corra solo cada mes, quite el # de las dos líneas de «schedule» (después de una prueba manual exitosa).
+name: Actualizar Portal y visor
+on:
+  workflow_dispatch:
+#  schedule:
+#    - cron: "0 12 1 * *"     # día 1 de cada mes, 9:00 de Chile (12:00 UTC)
+permissions:
+  contents: write
+  pages: write
+concurrency: actualizar-portal
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      CONTACTO_INVESTIGACION: ${{ vars.CONTACTO_INVESTIGACION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-min.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python codigo/actualizar_portal.py --reemplazar
+      - name: Guardar evidencia del recorrido
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salidas-portal
+          path: salidas/
+          retention-days: 90
+      - name: Publicar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add actualizaciones/portal docs/index.html
+          git diff --cached --quiet && { echo "Sin cambios"; exit 0; }
+          git commit -m "Actualización automática del Portal $(date -u +%Y-%m-%d)"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+        env:
+          GH_TOKEN: ${{ github.token }}

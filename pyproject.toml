@@ -1,0 +1,17 @@
+# Configuración de estilo del código (ruff: https://docs.astral.sh/ruff/).
+# Comprobar:  ruff check .      Dar formato:  ruff format .
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I", "UP", "SIM", "C4", "RET"]
+ignore = [
+  "B905",    # zip() sin strict=: las listas siempre tienen el mismo largo
+  "SIM105",  # try/except/pass es más claro que contextlib.suppress para lectores no programadores
+  "E731",    # funciones lambda cortas en las pruebas
+  "E501",    # el formateador ya limita el código a 120 caracteres; los textos largos (ayudas, mensajes) se dejan enteros
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["comun", "ronda", "ods_terminos", "historial_portal", "cerrar_ronda", "analisis_ronda", "revision_manual"]
