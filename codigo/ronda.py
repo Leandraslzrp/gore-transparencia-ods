@@ -2,7 +2,7 @@
 Formato estándar de una ronda de medición (mediciones/<ronda>/) y utilidades compartidas.
 
 Cada ronda queda en su propia carpeta con archivos de nombre fijo, para que cualquier persona pueda repetir
-el análisis o comparar rondas sin tocar el código. Ver documentacion/DICCIONARIO_DATOS.md.
+el análisis o comparar rondas sin tocar el código. Ver «Archivos de una ronda» en el README.
 """
 
 import json

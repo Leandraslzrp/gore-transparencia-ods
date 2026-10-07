@@ -8,7 +8,7 @@ authors:
     given-names: "Fernando"
   - family-names: "Hollander Sanhueza"
     given-names: "Reinier"
-version: "2.0.0"
+version: "2.0.1"
 date-released: "2026-10-07"
 license: MIT
 keywords: [transparencia activa, gobiernos regionales, ODS, web scraping, Chile]

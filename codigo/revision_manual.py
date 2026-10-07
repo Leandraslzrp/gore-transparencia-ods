@@ -1,5 +1,5 @@
 """
-Revisión manual de una ronda: lo que el código no pudo encontrar o verificar (ver documentacion/PROTOCOLO_REVISION_MANUAL.md).
+Revisión manual de una ronda: lo que el código no pudo encontrar o verificar (ver «Revisión manual» en el README).
 
 1) Después de recolectar, crear la planilla de revisión con los casos pendientes:
      python codigo/revision_manual.py crear --etiqueta 2027-04-10
@@ -54,7 +54,7 @@ def _leer(nombre, e):
 
 
 def pendientes(e):
-    """Lista de casos que una persona debe revisar a mano (ver PROTOCOLO_REVISION_MANUAL.md)."""
+    """Lista de casos que una persona debe revisar a mano (ver «Revisión manual» en el README)."""
     filas, gores = [], {g["gore"]: g["codigo"] for g in cargar_gores()}
     m = _leer("portal_matriz", e)
     if m is not None:

@@ -8,7 +8,7 @@ Paso 1 · plantilla: junta las menciones web, los pasajes y los documentos en un
      Menciones (Retórica/Sustantiva, dos codificadores y consenso) · Documentos (clasificación de cada
      ERD y cuenta pública, dos codificadores y consenso) · Mapa_17_ODS (nivel 0-3 de la ERD y 0/1/2 por ODS; filas
      cod. 1, cod. 2 y consenso) · Muestra_verificacion (5 GORE × términos para repetir la búsqueda web, semilla 2026)
-  Las reglas de codificación están en «Reglas de medición» del README y en documentacion/PROTOCOLO_RONDAS.md.
+  Las reglas de codificación están en «Reglas de medición» del README.
   La columna «Sugerencia automática» es solo una ayuda por palabras clave: NO reemplaza la codificación humana.
 
 Paso 2 · fiabilidad: una vez que ambos codificadores llenaron el Excel (sin ver el trabajo del otro).

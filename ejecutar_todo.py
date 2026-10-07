@@ -1,12 +1,12 @@
 """
-Punto de entrada del proyecto: todas las tareas habituales se corren desde aquí (ver documentacion/PROTOCOLO_RONDAS.md).
+Punto de entrada del proyecto: todas las tareas habituales se corren desde aquí (ver «Protocolo de rondas» en el README).
 
 RONDA DE MEDICIÓN (tres veces al año)
   1) Recolectar (automático, 2 a 4 horas): CPLT, Portal y ODS en sitios web y documentos
        python ejecutar_todo.py recolectar                  # etiqueta = fecha de hoy
        python ejecutar_todo.py recolectar --solo portal    # un solo paso: cplt | portal | ods
      → salidas/revision_manual_FECHA.xlsx: lo que el código no pudo encontrar o verificar
-       (documentacion/PROTOCOLO_REVISION_MANUAL.md)
+       («Revisión manual» en el README)
 
   2) Revisión manual y planilla de codificación (después de llenar la planilla de revisión)
        python ejecutar_todo.py plantilla --etiqueta 2027-04-10
@@ -123,7 +123,7 @@ def main():
             *(["--forzar"] if a.forzar else []),
         )
         analizar(a.ronda)
-        print(f"\nListo. Revise resultados/{a.ronda}/; luego publique la versión (documentacion/PUBLICAR.md).")
+        print(f"\nListo. Revise resultados/{a.ronda}/; luego escriba el informe de la ronda (ver el README).")
     elif a.accion == "analizar":
         analizar(a.ronda)
     elif a.accion == "verificar":

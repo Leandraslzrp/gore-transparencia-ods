@@ -1,6 +1,12 @@
 # Registro de cambios
 
-Versiones del código y del protocolo de medición (ver `documentacion/PUBLICAR.md`).
+Versiones del código y del protocolo de medición (ver «Publicar una versión» en el README).
+
+## [2.0.1] — 2026-10-07
+
+### Cambiado
+- Toda la documentación queda en el README: protocolo de rondas, reglas de medición, revisión manual, archivos de una ronda y publicación. Se elimina la carpeta `documentacion/`.
+- La revisión manual termina en «Cerrar la revisión»; se quita la sección sobre qué reportar en el informe o el paper.
 
 ## [2.0.0] — 2026-10-07
 
@@ -10,7 +16,7 @@ Repositorio dedicado a la medición replicable. Contiene el código, el protocol
 - Los datos de las rondas (`mediciones/`, `resultados/`), los resultados del artículo y los PDF aportados a mano ya no se versionan aquí: quedan en el computador de quien mide y se publican aparte.
 - El visor web y las mediciones del Portal entre rondas pasan a un proyecto separado.
 - `ejecutar_todo.py`: comandos `recolectar`, `plantilla`, `cerrar`, `analizar`, `verificar` y `pruebas`.
-- `documentacion/PROTOCOLO_RONDAS.md`: centrado en la replicación, con roles, criterios para elegir la fecha y corrección de rondas cerradas.
+- Protocolo de rondas: centrado en la replicación, con roles, criterios para elegir la fecha y corrección de rondas cerradas.
 - Las planillas que genera el código ya no tienen hoja de instrucciones ni filas de ejemplo (las reglas están en el README y en los protocolos), y la hoja Documentos de la planilla de codificación ya no muestra la huella SHA-256: `cerrar` la toma directamente de la recolección (`ods_documentos_FECHA.csv`), así que sigue registrada en `mediciones/RONDA/ods_documentos.csv`.
 
 ### Agregado
