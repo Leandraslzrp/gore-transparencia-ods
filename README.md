@@ -6,7 +6,7 @@ Cada medición, llamada **ronda**, cubre los 16 Gobiernos Regionales (GORE) en t
 
 > **Summary in English.** Code and protocol to replicate the measurement used in the paper above. Each measurement round covers Chile's 16 Regional Governments (GORE): the official active-transparency index of the Council for Transparency (CPLT), the actual availability of 15 mandatory categories on the national Transparency Portal (web scraping), and the disclosure of the Sustainable Development Goals (SDGs) on each GORE's website, Regional Development Strategy and annual public account, double-coded as rhetorical or substantive. A manual-review protocol covers what the code cannot find, and every closed round is stored with SHA-256 fingerprints. Documentation is in Spanish.
 
-**Contenido:** [Instalación](#instalación) · [Protocolo de rondas](#protocolo-de-rondas) · [Reglas de medición](#reglas-de-medición) · [Revisión manual](#revisión-manual) · [Archivos de una ronda](#archivos-de-una-ronda) · [Estructura](#estructura) · [Pruebas](#pruebas) · [Publicar una versión](#publicar-una-versión) · [Limitaciones](#limitaciones) · [Licencia y cita](#licencia-y-cita)
+**Contenido:** [Instalación](#instalación) · [Protocolo de rondas](#protocolo-de-rondas) · [Reglas de medición](#reglas-de-medición) · [Revisión manual](#revisión-manual) · [Archivos de una ronda](#archivos-de-una-ronda) · [Estructura](#estructura) · [Pruebas](#pruebas) · [Limitaciones](#limitaciones) · [Licencia y cita](#licencia-y-cita)
 
 ## Qué incluye
 
