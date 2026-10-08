@@ -161,22 +161,6 @@ Esto deja:
 - [ ] Escriba el informe de la ronda: fechas, roles (sin nombres si el informe es anónimo), cambios en `gores.csv`, problemas encontrados y resultado del control de calidad.
 - [ ] Guarde `mediciones/2027-2/` y `resultados/2027-2/` donde el equipo lo haya acordado. No se suben a este repositorio; si se publican, conviene archivarlos en Zenodo como conjunto de datos, con su `manifiesto.json`.
 
-### Corregir una ronda cerrada
-
-Una ronda cerrada no se edita a mano sin dejar registro. `python ejecutar_todo.py verificar 2027-2` detecta cualquier cambio posterior al cierre.
-
-- **Si el error está en la codificación:** corrija la planilla y vuelva a cerrar con `python ejecutar_todo.py cerrar 2027-2 --etiqueta 2027-06-15 --forzar`.
-- **Si después del cierre aparece un documento que no se había encontrado:** guarde el documento en `documentos_manuales/`, corrija la fila en `mediciones/RONDA/`, anote en `manifiesto.json` (campo `correcciones`) la fecha, el motivo, la huella del documento y los archivos cambiados, actualice las huellas y rehaga el análisis con `python ejecutar_todo.py analizar RONDA`. Así se corrigió la cuenta pública de La Araucanía en la ronda `2026-1`.
-
-En ambos casos, explique la corrección en el informe de la ronda y compruebe con `python ejecutar_todo.py verificar RONDA` que la ronda queda íntegra.
-
-### Reglas que no se cambian
-
-1. **Dos codificadores independientes** y consenso documentado en cada ronda.
-2. **Mismos términos, categorías y reglas de puntaje** que en `2026-1`, salvo cambio de versión mayor.
-3. **Solo información pública.** No se guarda el contenido de las tablas del Portal (puede tener datos personales), solo su existencia y su tamaño.
-4. **Respeto de robots.txt** y pausas de 1 a 2,5 segundos entre solicitudes.
-5. **Toda corrección queda registrada** en el manifiesto y en el informe de la ronda.
 
 ## Reglas de medición
 
@@ -204,8 +188,6 @@ El código encuentra la mayor parte de la información, pero no toda. En la rond
 Este procedimiento hace que esa revisión manual sea **sistemática, registrada y repetible**: se revisan siempre los mismos tipos de casos, con los mismos pasos, y cada búsqueda queda anotada.
 
 ### Cuándo se hace
-
-Entre la recolección automática y la codificación (paso 3 del [protocolo de rondas](#protocolo-de-rondas)):
 
 ```
 recolectar  →  REVISIÓN MANUAL  →  plantilla de codificación  →  codificar  →  cerrar
@@ -413,23 +395,6 @@ mediciones/, resultados/  datos y análisis de cada ronda cerrada (se crean al c
 
 `python ejecutar_todo.py pruebas` comprueba que las reglas de búsqueda, el índice, el κ de Cohen y el respeto de `robots.txt` no cambiaron sin querer. También simula dos rondas completas (revisión manual, codificación, cierre, análisis y verificación) con los datos de ejemplo de `tests/datos/`, que son las salidas de la recolección automática del 29 de septiembre de 2026. Las pruebas corren en GitHub en cada cambio, junto con una revisión del estilo del código ([ruff](https://docs.astral.sh/ruff/), configuración en `pyproject.toml`).
 
-## Publicar una versión
-
-Este repositorio contiene el código y el protocolo. Los datos de cada ronda (`mediciones/`, `resultados/`, `salidas/` y los PDF de `documentos_manuales/`) quedan en el computador de quien mide y se publican aparte, por ejemplo como conjunto de datos en Zenodo.
-
-Para subir un cambio del código:
-
-```bash
-python ejecutar_todo.py pruebas      # deben terminar en OK
-git add -A
-git status --short                   # revise qué se va a subir
-git commit -m "Descripción breve del cambio"
-git push
-```
-
-Para archivar una versión con DOI: conecte el repositorio en <https://zenodo.org> (con la cuenta de GitHub), actualice `version` y `date-released` en `CITATION.cff` y el `CHANGELOG.md`, y publique un *release* en GitHub con la etiqueta `vX.Y.Z`. Zenodo le asigna un DOI; para citar use el **DOI de concepto**, que agrupa todas las versiones.
-
-Números de versión: **parche** (2.0.1) para correcciones que no cambian resultados; **menor** (2.1.0) para funciones nuevas que no cambian el método; **mayor** (3.0.0) cuando cambia el método (términos, categorías, reglas de puntaje o de codificación), porque las rondas dejan de ser comparables.
 
 ## Limitaciones
 
