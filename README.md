@@ -46,7 +46,7 @@ Una **ronda** es una medición completa de los 16 Gobiernos Regionales (GORE): l
 
 | | |
 |---|---|
-| **Qué se necesita** | Un computador con Python 3.12 o superior, conexión a internet y este repositorio |
+| **Qué se necesita** | Un computador con Python 3.12 o superior y conexión a internet |
 | **Personas** | Mínimo dos (ver [Roles](#roles)) |
 | **Tiempo** | 3 a 4 jornadas: medio día automático, un día de revisión manual, uno o dos de codificación y una hora de cierre |
 | **Resultado** | `mediciones/AAAA-N/` (datos con huella SHA-256) y `resultados/AAAA-N/` (análisis y figuras), comparables con las rondas anteriores |
