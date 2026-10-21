@@ -366,16 +366,6 @@ Nombre de la ronda, fecha de cierre (UTC), fechas de recolección y codificació
 
 `codificacion.xlsx` (planilla codificada original) · `config_gores.csv` (configuración usada) · `crudos/` (salidas sin procesar de los scripts, con fechas y horas de cada consulta).
 
-### Archivos fuera de las rondas
-
-| Archivo | Contenido |
-|---|---|
-| `datos/referencia_cplt.csv` | Índice de transparencia activa del CPLT por GORE y año (`cplt_2024`, …) |
-| `config/gores.csv` | Por GORE: sitio web, tipo de buscador, URL de búsqueda y de listado, URL de la cuenta pública y de la ERD |
-| `config/cplt_informes.csv` | Fuente de cada año del CPLT |
-| `resultados/serie_rondas.csv` | Indicadores principales de todas las rondas (se crea al analizar) |
-| `plantillas/` | Planillas de revisión manual y de codificación en blanco |
-| `tests/datos/` | Salidas de ejemplo de la recolección automática (29-09-2026) para las pruebas |
 
 ## Estructura
 
